@@ -1,5 +1,4 @@
 //______Пример 8______//
-
 const seats = {
 
     '2023-02-17': {
@@ -27,7 +26,7 @@ const seats = {
                 '11','21','31','41','50'
             ],
             'format': true,
-            'food': false
+            'food': true
         },
     },
 
@@ -55,7 +54,7 @@ const seats = {
                 '1','2','3','4','5',
             ],
             'format': true,
-            'food': false
+            'food': true
         },
     },
 
@@ -83,7 +82,7 @@ const seats = {
             'freeSeats': [
                 '11','23'
             ],
-            'format': false,
+            'format': true,
             'food': true
         },
     },
@@ -119,12 +118,14 @@ function checkTicketsAvailable(data, time,numOfSeats) {
         })
         .then(() => {
             console.log('Проверяем можно ли в зал с едой...');
-            return new Promise((resolve) => {
+            return new Promise((resolve,reject) => {
                 setTimeout(() => {
                     //Данная переменная отвечает за получения значения food(true or false) из объекта, для того чтобы в дальнейшем можно было с ним работать
                     const checkFood = seats[data][time].food;
                     if (checkFood === true) {
                         console.log(`Сеанс ${data} в ${time} с едой можно`);
+                    } else if (typeof checkFood === 'number' || "undefined" || null || isNaN(checkFood)) {
+                        reject(`Неверный тип данных, перепроверьте свои данные`)
                     } else {
                         console.log(`Сеанс ${data} в ${time} с едой к сожалению нельзя`);
                     }
@@ -135,12 +136,14 @@ function checkTicketsAvailable(data, time,numOfSeats) {
         })
         .then(() => {
             console.log('Выбираем формат фильма...');
-            return new Promise((resolve) => {
+            return new Promise((resolve,reject) => {
                 setTimeout(() => {
                     //Данная переменная отвечает за получения значения format(true or false) из объекта, для того чтобы в дальнейшем можно было с ним работать
                     const checkFormat = seats[data][time].format
                     if (checkFormat === true) {
                         console.log(`Сеанс ${data} в ${time} будет в формате 3D`);
+                    } else if (typeof checkFormat === 'number' || "undefined" || null || isNaN(checkFormat)) {
+                        reject(`Неверный тип данных, перепроверьте свои данные`)
                     } else {
                          console.log(`Сеанс ${data} в ${time} будет в формате 2D`);
                     }
@@ -161,8 +164,6 @@ async function bookTickets(data, time,numOfSeats) {
         console.log('Спасибо что выбрали наш кинотеатр !');
     }
 }
-
-
 bookTickets('2023-02-17','15:00',['11']);
 
 
